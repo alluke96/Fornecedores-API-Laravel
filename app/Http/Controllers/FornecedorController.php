@@ -18,19 +18,83 @@ class FornecedorController extends Controller
     /**
      * @OA\Get(
      *     path="/fornecedores",
-     *     summary="Listar todos os fornecedores",
+     *     summary="Listar fornecedores com paginação, filtragem e ordenação",
      *     tags={"Fornecedores"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página para paginação",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Quantidade de registros por página",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=10)
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         description="Critérios de filtragem, por exemplo, 'nome=fornecedor1'",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         description="Campo para ordenação, por exemplo, 'nome' ou '-nome' para decrescente",
+     *         required=false,
+     *         @OA\Schema(type="string", example="nome")
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de fornecedores com telefones e endereços",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Fornecedor"))
+     *         description="Lista paginada de fornecedores",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Fornecedor")
+     *             ),
+     *             @OA\Property(property="current_page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=10),
+     *             @OA\Property(property="total", type="integer", example=100)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Requisição inválida"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro no servidor"
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Retorna todos os fornecedores com telefones e endereços
-        $fornecedores = Fornecedor::with(['telefones', 'enderecos'])->paginate(10);
+        $search = $request->input('search'); // Busca por nome ou outros campos
+        $sortBy = $request->input('sort_by', 'nome'); // Campo para ordenação (padrão: 'nome')
+        $sortDirection = $request->input('sort_direction', 'asc'); // Direção da ordenação (padrão: 'asc')
+        $perPage = $request->input('per_page', 10); // Quantidade de itens por página (padrão: 10)
+
+        // Query base com relacionamentos
+        $query = Fornecedor::with(['telefones', 'enderecos']);
+
+        // Adiciona filtro por busca (se aplicável)
+        if ($search) {
+            $query->where('nome', 'like', '%' . $search . '%')
+                ->orWhere('documento', 'like', '%' . $search . '%');
+        }
+
+        // Aplica ordenação
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Pagina os resultados
+        $fornecedores = $query->paginate($perPage);
+
+        // Retorna os dados em JSON ou para uma view
         return response()->json($fornecedores);
     }
 

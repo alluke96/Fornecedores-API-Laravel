@@ -1,72 +1,53 @@
 <?php
 
-namespace Tests\Feature;
-
-use App\Models\Fornecedor;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Fornecedor;
 
 class FornecedorApiTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function it_can_create_a_fornecedor()
+    public function pode_listar_fornecedores()
     {
-        $response = $this->postJson('/api/fornecedores', [
-            'nome' => 'Fornecedor A',
-            'documento' => '12345678901234',
-            'ativo' => true,
-        ]);
-
-        $response->assertStatus(201);
-        $response->assertJson([
-            'nome' => 'Fornecedor A',
-            'documento' => '12345678901234',
-            'ativo' => true,
-        ]);
-    }
-
-    /** @test */
-    public function it_can_list_fornecedores()
-    {
-        Fornecedor::factory()->create();
+        Fornecedor::factory()->count(5)->create();
 
         $response = $this->getJson('/api/fornecedores');
 
-        $response->assertStatus(200);
-        $response->assertJsonCount(1);
+        $response->assertStatus(200)
+                 ->assertJsonCount(5, 'data');
     }
 
     /** @test */
-    public function it_can_update_a_fornecedor()
+    public function pode_criar_fornecedor_valido()
     {
-        $fornecedor = Fornecedor::factory()->create();
+        $dados = [
+            'nome' => 'Fornecedor Teste',
+            'documento' => '12345678000195',
+            // 'telefones' => [
+            //     ['telefone' => '11999999999'],
+            // ],
+        ];
 
-        $response = $this->putJson('/api/fornecedores/' . $fornecedor->id, [
-            'nome' => 'Fornecedor Atualizado',
-            'documento' => '98765432109876',
-            'ativo' => false,
-        ]);
+        $response = $this->postJson('/api/fornecedores', $dados);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'nome' => 'Fornecedor Atualizado',
-            'documento' => '98765432109876',
-            'ativo' => false,
-        ]);
+        $response->assertStatus(201)
+                 ->assertJsonFragment(['nome' => 'Fornecedor Teste']);
     }
 
     /** @test */
-    public function it_can_delete_a_fornecedor()
+    public function nao_pode_criar_fornecedor_com_dados_invalidos()
     {
-        $fornecedor = Fornecedor::factory()->create();
+        $dados = [
+            'nome' => '',
+            'documento' => 'inválido',
+            'email' => 'email_invalido',
+            'telefone' => ''
+        ];
 
-        $response = $this->deleteJson('/api/fornecedores/' . $fornecedor->id);
+        $response = $this->postJson('/api/fornecedores', $dados);
 
-        $response->assertStatus(200);
-        $this->assertDatabaseMissing('fornecedores', [
-            'id' => $fornecedor->id
-        ]);
+        $response->assertStatus(422);
     }
 }

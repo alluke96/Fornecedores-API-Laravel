@@ -33,7 +33,7 @@ class CpfOuCnpj implements ValidationRule
                 $d += $cpf[$c] * (($t + 1) - $c);
             }
             $d = ((10 * $d) % 11) % 10;
-            if ($cpf[$c] != $d) {
+            if ($cpf[$t] != $d) {
                 return false;
             }
         }
@@ -45,23 +45,33 @@ class CpfOuCnpj implements ValidationRule
     {
         $cnpj = preg_replace('/\D/', '', $cnpj);
 
-        if (strlen($cnpj) !== 14) {
+        if (strlen($cnpj) !== 14 || preg_match('/^(\d)\1{13}$/', $cnpj)) {
             return false;
         }
 
-        $weight = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-        for ($t = 12; $t < 14; $t++) {
-            $d = 0;
-            for ($c = 0; $c < $t; $c++) {
-                $d += $cnpj[$c] * $weight[$c + 1 - (14 - $t)];
-            }
-            $d = $d % 11;
-            $d = $d < 2 ? 0 : 11 - $d;
-            if ($cnpj[$t] != $d) {
-                return false;
-            }
+        $weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+        $weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+        // Valida o primeiro dígito verificador
+        $d1 = 0;
+        for ($i = 0; $i < 12; $i++) {
+            $d1 += $cnpj[$i] * $weights1[$i];
+        }
+        $d1 = $d1 % 11;
+        $d1 = $d1 < 2 ? 0 : 11 - $d1;
+
+        if ($cnpj[12] != $d1) {
+            return false;
         }
 
-        return true;
+        // Valida o segundo dígito verificador
+        $d2 = 0;
+        for ($i = 0; $i < 13; $i++) {
+            $d2 += $cnpj[$i] * $weights2[$i];
+        }
+        $d2 = $d2 % 11;
+        $d2 = $d2 < 2 ? 0 : 11 - $d2;
+
+        return $cnpj[13] == $d2;
     }
 }

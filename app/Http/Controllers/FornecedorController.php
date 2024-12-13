@@ -125,7 +125,7 @@ class FornecedorController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'documento' => ['required', 'string', 'unique:fornecedores', new CpfOuCnpj],
-            'ativo' => 'required|boolean',
+            'ativo' => 'boolean',
         ]);
 
         $fornecedor = Fornecedor::create($request->only(['nome', 'documento', 'ativo']));
@@ -222,7 +222,7 @@ class FornecedorController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'documento' => ['required', 'string', 'unique:fornecedores,documento,' . $fornecedor->id, new CpfOuCnpj],
-            'ativo' => 'required|boolean',
+            'ativo' => 'boolean',
         ]);
 
         $fornecedor->update($request->only(['nome', 'documento', 'ativo']));

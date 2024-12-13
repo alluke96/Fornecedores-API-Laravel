@@ -10,7 +10,4 @@ use App\Http\Controllers\EnderecoController;
 Route::apiResource('fornecedores', FornecedorController::class);
 Route::apiResource('telefones', TelefoneController::class);
 Route::apiResource('enderecos', EnderecoController::class);
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware(Authenticate::using('sanctum'));
+Route::get('/buscar-cnpj/{cnpj}', [FornecedorController::class, 'buscarCnpj']);

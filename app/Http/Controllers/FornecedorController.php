@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Fornecedor;
 use App\Models\Telefone;
 use App\Models\Endereco;
+use App\Rules\CpfOuCnpj;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 /**
  * @OA\Tag(
@@ -122,7 +124,7 @@ class FornecedorController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'documento' => 'required|string|unique:fornecedores',
+            'documento' => ['required', 'string', 'unique:fornecedores', new CpfOuCnpj],
             'ativo' => 'required|boolean',
         ]);
 
@@ -219,7 +221,7 @@ class FornecedorController extends Controller
 
         $request->validate([
             'nome' => 'required|string|max:255',
-            'documento' => 'required|string|unique:fornecedores,documento,' . $fornecedor->id,
+            'documento' => ['required', 'string', 'unique:fornecedores,documento,' . $fornecedor->id, new CpfOuCnpj],
             'ativo' => 'required|boolean',
         ]);
 
@@ -257,5 +259,38 @@ class FornecedorController extends Controller
         $fornecedor = Fornecedor::findOrFail($id);
         $fornecedor->delete();
         return response()->json(['message' => 'Fornecedor excluído com sucesso.']);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/fornecedores/cnpj/{cnpj}",
+     *     summary="Buscar um fornecedor pelo CNPJ",
+     *     tags={"Fornecedores"},
+     *     @OA\Parameter(
+     *         name="cnpj",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fornecedor encontrado",
+     *         @OA\JsonContent(ref="#/components/schemas/Fornecedor")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Fornecedor nao encontrado"
+     *     )
+     * )
+     * */
+    public function buscarCnpj($cnpj)
+    {
+        $response = Http::get("https://brasilapi.com.br/api/cnpj/v1/{$cnpj}");
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'CNPJ não encontrado'], 404);
+        }
+
+        return response()->json($response->json());
     }
 }

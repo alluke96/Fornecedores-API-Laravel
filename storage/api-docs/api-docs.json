@@ -1,0 +1,679 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Fornecedores API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/enderecos": {
+            "get": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Listar todos os endereços",
+                "operationId": "736b5681b3a3623d5350cfb852357250",
+                "responses": {
+                    "200": {
+                        "description": "Lista de endereços",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Endereco"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Criar um novo endereço",
+                "operationId": "649a502077b75ae60503d438b32c3adb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Endereco"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Endereço criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Endereco"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/enderecos/{id}": {
+            "get": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Mostrar um endereço específico",
+                "operationId": "71c7a5cd3a34ebde0c07ce01de7ffcd3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do endereço",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Endereco"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Atualizar um endereço",
+                "operationId": "6d108c91b084144567f48047c255c13a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Endereco"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Endereço atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Endereco"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Deletar um endereço",
+                "operationId": "09da19df7ac2b9d40b4cd5604730d370",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço deletado"
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    }
+                }
+            }
+        },
+        "/fornecedores": {
+            "get": {
+                "tags": [
+                    "Fornecedores"
+                ],
+                "summary": "Listar todos os fornecedores",
+                "operationId": "4f9f7cd190b6a0c9852d658e3123984b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de fornecedores com telefones e endereços",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Fornecedor"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Fornecedores"
+                ],
+                "summary": "Criar um novo fornecedor",
+                "operationId": "7c0a75f3bcd80c4d63d7d6904fb94c52",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fornecedor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Fornecedor criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Fornecedor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/fornecedores/{id}": {
+            "get": {
+                "tags": [
+                    "Fornecedores"
+                ],
+                "summary": "Mostrar um fornecedor específico",
+                "operationId": "89d5d87190eb751b6f2445fb260acafa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Fornecedor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Fornecedor não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Fornecedores"
+                ],
+                "summary": "Atualizar um fornecedor",
+                "operationId": "0c5fec87e3b40c1593c471fc1937e321",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fornecedor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Fornecedor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    },
+                    "404": {
+                        "description": "Fornecedor não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fornecedores"
+                ],
+                "summary": "Deletar um fornecedor",
+                "operationId": "eae74392f7eeed6c049c08677ae2660d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Fornecedor excluído com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Fornecedor não encontrado"
+                    }
+                }
+            }
+        },
+        "/telefones": {
+            "get": {
+                "tags": [
+                    "Telefones"
+                ],
+                "summary": "Listar todos os telefones",
+                "operationId": "b61db6b665859d36b3105e4a284c8092",
+                "responses": {
+                    "200": {
+                        "description": "Lista de telefones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Telefone"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Telefones"
+                ],
+                "summary": "Criar um novo telefone",
+                "operationId": "4a149d88ef14c9bb2bbf5b5935a6071b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Telefone"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Telefone criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Telefone"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/telefones/{id}": {
+            "get": {
+                "tags": [
+                    "Telefones"
+                ],
+                "summary": "Mostrar um telefone específico",
+                "operationId": "3138fe9e2884ccd0f6ff04a9c96dc204",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do telefone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Telefone encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Telefone"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Telefone não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Telefones"
+                ],
+                "summary": "Atualizar um telefone",
+                "operationId": "e073316d97717d4e4ce04d05abdfd2d6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do telefone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Telefone"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Telefone atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Telefone"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Telefone não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Telefones"
+                ],
+                "summary": "Deletar um telefone",
+                "operationId": "1856290a777cc09384b3b2fbc2c3b6ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do telefone",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Telefone deletado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Telefone deletado com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Telefone não encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Endereco": {
+                "required": [
+                    "rua",
+                    "numero",
+                    "bairro",
+                    "cidade",
+                    "uf",
+                    "cep"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do endereço",
+                        "type": "integer"
+                    },
+                    "rua": {
+                        "description": "Rua do endereço",
+                        "type": "string"
+                    },
+                    "numero": {
+                        "description": "Número do endereço",
+                        "type": "string"
+                    },
+                    "complemento": {
+                        "description": "Complemento do endereço",
+                        "type": "string"
+                    },
+                    "bairro": {
+                        "description": "Bairro do endereço",
+                        "type": "string"
+                    },
+                    "cidade": {
+                        "description": "Cidade do endereço",
+                        "type": "string"
+                    },
+                    "uf": {
+                        "description": "UF do endereço",
+                        "type": "string"
+                    },
+                    "cep": {
+                        "description": "CEP do endereço",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deleted_at": {
+                        "description": "Data de exclusão",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Fornecedor": {
+                "required": [
+                    "nome",
+                    "documento",
+                    "ativo"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do fornecedor",
+                        "type": "integer"
+                    },
+                    "nome": {
+                        "description": "Nome do fornecedor",
+                        "type": "string"
+                    },
+                    "documento": {
+                        "description": "Documento do fornecedor",
+                        "type": "string"
+                    },
+                    "ativo": {
+                        "description": "Status de atividade do fornecedor",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deleted_at": {
+                        "description": "Data de exclusão (soft delete)",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "telefones": {
+                        "description": "Relação many-to-many com telefones",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Telefone"
+                        }
+                    },
+                    "enderecos": {
+                        "description": "Relação many-to-many com endereços",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Endereco"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Telefone": {
+                "required": [
+                    "telefone"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do telefone",
+                        "type": "integer"
+                    },
+                    "telefone": {
+                        "description": "Número de telefone",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deleted_at": {
+                        "description": "Data de exclusão",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Endereços",
+            "description": "Gerenciamento dos endereços"
+        },
+        {
+            "name": "Fornecedores",
+            "description": "Gerenciamento dos fornecedores"
+        },
+        {
+            "name": "Telefones",
+            "description": "Gerenciamento dos telefones"
+        }
+    ]
+}
